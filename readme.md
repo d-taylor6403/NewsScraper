@@ -28,7 +28,7 @@ This app was deployed on Heroku and can be viewed [here](https://headlinenewsdta
 * Node
 * JSON
 
-![Image of Example 1]()
-![Image of Example 2]()
-![Image of Example 3]()
+![Image of Example 1](https://github.com/d-taylor6403/NewsScraper/blob/master/public/assets/images/demo1.gif)
+![Image of Example 2](https://github.com/d-taylor6403/NewsScraper/blob/master/public/assets/images/demo2.gif)
+![Image of Example 3](https://github.com/d-taylor6403/NewsScraper/blob/master/public/assets/images/demo3.gif)
 
