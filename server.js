@@ -17,13 +17,11 @@ app.use(
 
 app.use(express.static(process.cwd() + "/public"));
 //Require set up handlebars
+var Handlebars = require("handlebars");
 var exphbs = require("express-handlebars");
-app.engine(
-  "handlebars",
-  exphbs({
-    defaultLayout: "main"
-  })
-);
+var {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+app.engine("handlebars",exphbs({defaultLayout: "main"}));
+app.engine("handlebars", exphbs({handlebars: allowInsecurePrototypeAccess(Handlebars)}));
 app.set("view engine", "handlebars");
 
 //connecting to MongoDB
