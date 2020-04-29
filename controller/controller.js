@@ -16,18 +16,22 @@ router.get("/scrape", function(req, res) {
     axios.get("https://www.tennessean.com/news/").then(function(response) {
         var $ = cheerio.load(response.data);
 
-        $(".flm-asset-link js-asset-link brand-hover-shadow-parent").each(function(i, element) {
+        $(".flm-asset").each(function(i, element) {
 
             var result = {};
 
-            result.title = $(this).children("span").text();
+            result.title = $(this).find("span").text().trim("\n");
             
-            result.link = $(this).children("a").attr("href");
+            result.link = $(this).find("a").attr("href");
 
-            result.sum = $(this).children("p").text();
+            result.summary = $(this).find(".flm-summary").text().trim();
+
+            console.log(result);
 
 
-            db.Article.create(result)
+
+
+            Article.create(result)
                 .then(function(dbArticle) {
                     console.log(dbArticle);
                 })
@@ -36,11 +40,14 @@ router.get("/scrape", function(req, res) {
                 });
         });
         res.redirect("/");
+        
     });
 });
 
 router.get("/articles", function(req,res) {
-    Article.find().sort({_id: -1}).exec(function(err, doc){
+    Article.find({})
+    
+    .exec(function(err, doc){
         if (err) {
             console.log(err);
         }else{
@@ -51,7 +58,7 @@ router.get("/articles", function(req,res) {
 });
 
 router.get("/articles-json", function(req, res) {
-    Articles.find({}, function(err, doc) {
+    Article.find({}, function(err, doc) {
         if (err) {
             console.log(err)
         }else{
@@ -59,5 +66,86 @@ router.get("/articles-json", function(req, res) {
         }
     });
 });
+
+router.get("/clearAll", function(req,res) {
+    Article.remove({}, function(err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Removed all articles");
+        }
+    });
+    res.redirect("/");
+});
+
+router.get("/readArticle/:id", function(req, res) {
+    var hbsObj = {
+        title2:[],
+        body:[]
+    };
+
+    Article.findOne({ _id: req.params.id })
+    .populate("comment")
+    .then(function(doc) {
+        hbsObj.article = doc;
+        var link = ("https://tennessean.com" + doc.link)
+
+        axios.get(link).then(function(response) {
+            var $ = cheerio.load(response.data);
+
+            $(".asset").each(function(i, element) {
+                
+                hbsObj.title2 = $(this).find(".asset-headline").text();
+
+                hbsObj.body = $(this).find(".p-text").text();
+
+               return console.log(hbsObj);
+              
+            });
+            
+            res.render("article", hbsObj);
+        });
+        
+        
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+});
+
+router.post("/comment/:id", function(req, res) {
+    var user = req.body.name;
+    var content = req.body.comment;
+    var articleId = req.params.id;
+
+    var commentObj = {
+        name: user,
+        body: content
+    };
+
+    var newComment = new Comment(commentObj);
+
+    newComment.save(function(err, doc) {
+        if (err) {
+            console.log(err);
+        }else {
+            console.log(doc._id);
+            console.log(articleId);
+
+            Article.findOneAndUpdate(
+                { _id: req.params.id},
+                { $push: {comment: doc._id} },
+                { new: true }
+            ).exec(function(err, doc) {
+                if (err) {
+                    console.log(err);
+                } else{
+                    res.redirect(`/readArticle/${articleId}`);
+                }
+            });
+        }
+    });
+});
+
 
 module.exports = router;

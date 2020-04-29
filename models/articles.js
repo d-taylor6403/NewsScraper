@@ -10,11 +10,14 @@ var articleSchema = new Schema({
     },
     summary: {
         type: String,
-        required: true
+        required: false
     },
     link: {
         type: String,
         required: true
+    },
+    articleBody: {
+        type: Schema.Types.ObjectId
     },
     comment: [{
         type: Schema.Types.ObjectId,

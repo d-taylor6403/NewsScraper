@@ -1,0 +1,172 @@
+html {
+    position: relative;
+    min-height: 100%;
+  }
+  
+  body {
+    margin-bottom: 80px;
+    background-image: url("../images/repeated-square.png");
+  }
+  
+  .card a:not([href]):not([tabindex]).scrape-new {
+    color: #17a2b8;
+  }
+  
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+    color: white;
+    background-color: #212529;
+    text-align: center;
+  }
+  
+  .navbar {
+    margin-bottom: 0;
+  }
+  
+  .jumbotron {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    padding: 0;
+    box-shadow: 10px 5px 20px 2px lightslategrey;
+  }
+  
+  .jumbotron .overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: auto;
+    background: linear-gradient(#333, black);
+    opacity: 0.7;
+  }
+  
+  .jumbotron .background-image {
+    height: 100%;
+    background-image: url("../images/background-image.jpg");
+    background-size: cover;
+  }
+  
+  .jumbotron .caption {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .jumbotron .caption h1,
+  .jumbotron .caption p {
+    color: white;
+  }
+  
+  .jumbotron h1 {
+    font-size: 80px;
+    font-weight: 800;
+  }
+  
+  .jumbotron p {
+    font-size: 30px;
+  }
+  
+  .article-container {
+    padding-bottom: 25px;
+    width: 1200px;
+  }
+  
+  .card {
+    border-radius: 0;
+    box-shadow: 3px 3px 20px lightslategrey;
+    margin: 20px 0;
+  }
+  
+  .card-header {
+    background-color: #138496;
+    position: relative;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  
+  .card .card-header h3 {
+    color: white;
+  }
+  
+  .card .card-header .btn {
+    position: absolute;
+    top: 90px;
+    right: 40px;
+  }
+  
+  .card .card-header .btn.delete {
+    right: 160px;
+  }
+  
+  .card .card-body {
+    font-size: 16px;
+    background-color: white;
+  }
+  
+  .card .card-header .article-link {
+    color: white;
+    display: inline-block;
+    width: 80%;
+  }
+  
+  .footer > .container > p {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    margin: 0;
+    font-weight: 800;
+    background: #212529;
+  }
+  
+  .navbar-nav > li > a.scrape-new,
+  .navbar-nav > li > a.home,
+  .navbar-nav > li > a.saved{
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-weight: 800;
+    color: white;
+  }
+  
+  .navbar-nav > li > a.scrape-new:hover,
+  .navbar-nav > li > a.home:hover,
+  .navbar-nav > li > a.saved:hover{
+    background: #212529;
+    color: whitesmoke;
+  }
+  
+  .navbar-nav > li > a.scrape-new:hover,
+  .navbar-nav > li > a.home:hover,
+  .navbar-nav > li > a.saved:hover{
+    background: #17a2b8;
+  }
+  
+  .scrape-new {
+    cursor: pointer;
+  }
+  
+  .m-top-80 {
+    margin-top: 80px;
+  }
+  
+  textarea {
+    padding: 10px;
+    resize: none;
+    width: 100%;
+  }
+  
+  .note.list-group-item .btn {
+    position: relative;
+    bottom: 10px;
+  }
