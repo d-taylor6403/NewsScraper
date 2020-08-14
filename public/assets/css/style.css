@@ -11,8 +11,8 @@ html {
   .card a:not([href]):not([tabindex]).scrape-new {
     color: #17a2b8;
   }
-  
-  .footer {
+
+   .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -96,8 +96,9 @@ html {
   
   .card .card-header .btn {
     position: absolute;
-    top: 90px;
-    right: 40px;
+    top: 60%;
+    right: 82%;
+    border: white 2px;
   }
   
   .card .card-header .btn.delete {
@@ -107,7 +108,12 @@ html {
   .card .card-body {
     font-size: 16px;
     background-color: white;
+    margin-right: 100px;
+    
   }
+
+
+
   
   .card .card-header .article-link {
     color: white;
