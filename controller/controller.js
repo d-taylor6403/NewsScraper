@@ -1,5 +1,5 @@
 var express = require("express");
-var router =express.Router();
+var router = express.Router();
 var path = require("path");
 
 var axios = require("axios");
@@ -13,18 +13,23 @@ router.get("/", function(req, res) {
 });
 
 router.get("/scrape", function(req, res) {
-    axios.get("https://www.tennessean.com/news/").then(function(response) {
+    axios.get("https://www.nytimes.com/section/politics").then(function(response) {
         var $ = cheerio.load(response.data);
 
-        $(".flm-asset").each(function(i, element) {
+
+        $(".css-ye6x8s").each(function(i, element) {
 
             var result = {};
 
-            result.title = $(this).find("span").text().trim("\n");
-            
-            result.link = $(this).find("a").attr("href");
+            result.title = $(this).find("h2").text().trim();
 
-            result.summary = $(this).find(".flm-summary").text().trim();
+            result.byline = $(this).find(".css-1nqbnmb").text().trim("\n")
+
+            result.summary = $(this).find(".css-1echdzn").text().trim("\n");
+
+            result.image = $(this).find("img.css-11cwn6f").attr("src");
+
+            result.link = $(this).find("a").attr("href");
 
             console.log(result);
 
@@ -40,35 +45,35 @@ router.get("/scrape", function(req, res) {
                 });
         });
         res.redirect("/");
-        
+
     });
 });
 
-router.get("/articles", function(req,res) {
+router.get("/articles", function(req, res) {
     Article.find({})
-    
-    .exec(function(err, doc){
-        if (err) {
-            console.log(err);
-        }else{
-            var artcl = {article: doc };
-            res.render("index", artcl);
-        }
-    });
+
+        .exec(function(err, doc) {
+            if (err) {
+                console.log(err);
+            } else {
+                var artcl = {article: doc};
+                res.render("index", artcl);
+            }
+        });
 });
 
 router.get("/articles-json", function(req, res) {
     Article.find({}, function(err, doc) {
         if (err) {
             console.log(err)
-        }else{
+        } else {
             res.json(doc);
         }
     });
 });
 
-router.get("/clearAll", function(req,res) {
-    Article.remove({}, function(err, doc) {
+router.get("/clearAll", function(req, res) {
+    Article.deleteMany({}, function(err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -80,37 +85,37 @@ router.get("/clearAll", function(req,res) {
 
 router.get("/readArticle/:id", function(req, res) {
     var hbsObj = {
-        title2:[],
-        body:[]
+        title2: [],
+        body: []
     };
 
-    Article.findOne({ _id: req.params.id })
-    .populate("comment")
-    .then(function(doc) {
-        hbsObj.article = doc;
-        var link = ("https://tennessean.com" + doc.link)
+    Article.findOne({_id: req.params.id})
+        .populate("comment")
+        .then(function(doc) {
+            hbsObj.article = doc;
+            var link = ("https://tennessean.com" + doc.link)
 
-        axios.get(link).then(function(response) {
-            var $ = cheerio.load(response.data);
+            axios.get(link).then(function(response) {
+                var $ = cheerio.load(response.data);
 
-            $(".asset").each(function(i, element) {
-                
-                hbsObj.title2 = $(this).find(".asset-headline").text();
+                $(".asset").each(function(i, element) {
 
-                hbsObj.body = $(this).find(".p-text").text();
+                    hbsObj.title2 = $(this).find(".asset-headline").text();
 
-               return console.log(hbsObj);
-              
+                    hbsObj.body = $(this).find(".p-text").text();
+
+                    return console.log(hbsObj);
+
+                });
+
+                res.render("article", hbsObj);
             });
-            
-            res.render("article", hbsObj);
+
+
+        })
+        .catch(function(err) {
+            console.log(err);
         });
-        
-        
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
 });
 
 router.post("/comment/:id", function(req, res) {
@@ -128,18 +133,18 @@ router.post("/comment/:id", function(req, res) {
     newComment.save(function(err, doc) {
         if (err) {
             console.log(err);
-        }else {
+        } else {
             console.log(doc._id);
             console.log(articleId);
 
             Article.findOneAndUpdate(
-                { _id: req.params.id},
-                { $push: {comment: doc._id} },
-                { new: true }
+                {_id: req.params.id},
+                {$push: {comment: doc._id}},
+                {new: true}
             ).exec(function(err, doc) {
                 if (err) {
                     console.log(err);
-                } else{
+                } else {
                     res.redirect(`/readArticle/${articleId}`);
                 }
             });
