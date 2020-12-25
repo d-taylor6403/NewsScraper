@@ -49,7 +49,7 @@ router.get("/scrape", function(req, res) {
     });
 });
 
-router.get("/articles", function(req, res) {
+router.get("/", function(req, res) {
     Article.find({})
 
         .exec(function(err, doc) {
