@@ -37,8 +37,8 @@ router.get("/scrape", function(req, res) {
 
 
             Article.create(result)
-                .then(function(dbArticle) {
-                    console.log(dbArticle);
+                .then(function(Article) {
+                    console.log(Article);
                 })
                 .catch(function(err) {
                     console.log(err);
@@ -49,7 +49,7 @@ router.get("/scrape", function(req, res) {
     });
 });
 
-router.get("/", function(req, res) {
+router.get("/articles", function(req, res) {
     Article.find({})
 
         .exec(function(err, doc) {
@@ -62,12 +62,12 @@ router.get("/", function(req, res) {
         });
 });
 
-router.get("/", function(req, res) {
-    Article.find({}, function(err, doc) {
+router.get("/articles/:id", function(req, res) {
+    Article.find({}, function(err, Article) {
         if (err) {
             console.log(err)
         } else {
-            res.json(doc);
+            res.json(Article);
         }
     });
 });
@@ -93,7 +93,7 @@ router.get("/readArticle/:id", function(req, res) {
         .populate("comment")
         .then(function(doc) {
             hbsObj.article = doc;
-            var link = ("https://tennessean.com" + doc.link)
+            var link = ("https://www.nytimes.com/section/politics" + doc.link)
 
             axios.get(link).then(function(response) {
                 var $ = cheerio.load(response.data);
