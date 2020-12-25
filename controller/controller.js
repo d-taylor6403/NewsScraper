@@ -62,7 +62,7 @@ router.get("/", function(req, res) {
         });
 });
 
-router.get("/articles-json", function(req, res) {
+router.get("/", function(req, res) {
     Article.find({}, function(err, doc) {
         if (err) {
             console.log(err)
